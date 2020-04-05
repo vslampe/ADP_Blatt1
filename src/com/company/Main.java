@@ -8,6 +8,11 @@ public class Main {
             list.insertAt("World",1);
             list.insertAt("Auto",0);
             list.insertAt("!",3);
+            list.deleteAt(1);
+            list.deleteAt(0);
+            list.deleteAt(0);
+            list.deleteAt(0);
+            list.deleteAt(0);
 
     }
 }

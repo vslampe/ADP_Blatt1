@@ -44,8 +44,28 @@ public class ArrayList<T> implements IList<T> {
         anzahlElemente++;
     }
 
+    /**
+     * Entfernt ein Element aus der Liste. Wirft InvalidParameterException, falls es sich um eine leere Liste handelt.
+     * @param pos Muss zwischen 0 und
+     */
     @Override
     public void deleteAt(int pos) {
+
+        if(anzahlElemente == 0){
+            throw new InvalidParameterException("Es kann kein Element aus einer leeren Liste entfernt werden");
+        }
+        if(!istGueltigeEinfPos(pos)){
+            throw new InvalidParameterException("Ungültige Löscheposition oder Kapazität überschritten!");
+        }
+        if(!(anzahlElemente == pos)){
+            Object last = null;
+            for(int i = anzahlElemente-1; i>=pos; i--){
+                Object aktElm = elemente[i];
+                elemente[i]= last;
+                last = aktElm;
+            }
+        }
+        anzahlElemente--;
 
     }
 
