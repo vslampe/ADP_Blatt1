@@ -93,5 +93,6 @@ public class ArrayList<T> implements IList<T> {
         for(int i =0 ; i < elemente.length; i++){
             elemente[i] = null;
         }
+        anzahlElemente=0;
     }
 }
