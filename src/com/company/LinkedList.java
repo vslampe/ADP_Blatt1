@@ -155,7 +155,14 @@ public class LinkedList<T> implements IList<T>{
         if(var2 == 0) {
             return kopf.element;
         }
-
+        //Wenn es die letzte Knote ist
+        else if(var2==getAnzahlElemente()-1){
+            Knoten<T> zeiger = kopf;
+            while(zeiger.nachfolger!=null){
+                zeiger = zeiger.nachfolger;
+            }
+            return zeiger.element;
+        }
         //Auf gewünschte Position
         else {
             Knoten<T> zeiger = kopf;

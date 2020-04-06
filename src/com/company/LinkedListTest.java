@@ -50,10 +50,9 @@ public class LinkedListTest {
         assertEquals(0,tl.getAnzahlElemente());
 
     }
-    @Test(expected = InvalidParameterException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void deleteAtNegative(){
-
-        tl.deleteAt(0);
+        tl.deleteAt(-1);
     }
 
     @Test

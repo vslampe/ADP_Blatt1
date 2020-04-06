@@ -53,7 +53,7 @@ public class ArrayListTest {
     @Test(expected = InvalidParameterException.class)
     public void deleteAtNegative(){
 
-        tl.deleteAt(0);
+        tl.deleteAt(-1);
     }
 
     @Test
