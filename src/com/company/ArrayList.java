@@ -7,7 +7,7 @@ public class ArrayList<T> implements IList<T> {
     private Object elemente[];
     private int anzahlElemente;
     private int maxAnzahlElemente;
-    private static final  int KAPAZITAET = 5;
+    private static final  int KAPAZITAET = 50000;
     public ArrayList(){
             elemente = new Object[KAPAZITAET];
             anzahlElemente=0;

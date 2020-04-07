@@ -15,16 +15,30 @@ public class PerformanceTest {
         return new String(array, Charset.forName("UTF-8"));
     }
     /**
+     * generiereZufaelligePos()
+     * @param anzahlElemente
+     * @return
+     */
+    private int generiereZufaelligePos(int anzahlElemente) {
+        Random ran = new Random();
+        int res  = 0 + ran.nextInt((anzahlElemente-1)-0+1);
+        return res;
+    }
+
+    /**
      * Fuegt 10 000 Elemente in die Liste ein.
      * @param iList Darf nicht null sein
      * @param options Darf nicht null sein
      *                @return Gibt die vergangene Zeit in Nanosekunden zurück
      */
     private long fuegeZehntausendElemEin(IList<String> iList, Options options){
+
         final long timeStart = System.nanoTime();
-        int pos = 0;
+
         if(options == Options.ENDE){
-            pos= 1;
+            for(int i = 0; i < 10000; i++){
+                iList.insertAt(generiereZufaelligenStr(),iList.getAnzahlElemente()-1);
+            }
         }
         else if(options==Options.ZUFALL){
             //Performance Gruende
@@ -33,15 +47,14 @@ public class PerformanceTest {
             }
         }
         else {
-        for(int i = 0; i < 10000; i++){
-            iList.insertAt(generiereZufaelligenStr(),pos);
+            for(int i = 0; i < 10000; i++){
+                iList.insertAt(generiereZufaelligenStr(),0);
+            }
 
-        }
         }
         return System.nanoTime()-timeStart;
 
     }
-
     /**
      * Löscht 1000 Elemente in der Liste
      * @param iList Darf nicht null sein
@@ -49,10 +62,13 @@ public class PerformanceTest {
      * @return Gibt die vergangene Zeit in Nanosekunden zurück
      */
     private long loescheTausendElem(IList<String> iList, Options options){
+
         final long timeStart = System.nanoTime();
         int pos = 0;
         if(options == Options.ENDE){
-            pos= 1;
+            for(int i = 0; i < 10000; i++){
+                iList.deleteAt(iList.getAnzahlElemente()-1);
+            }
         }
         else if(options==Options.ZUFALL){
             //Performance Gruende
@@ -67,28 +83,48 @@ public class PerformanceTest {
         }
         return System.nanoTime()-timeStart;
     }
-    /**
-     * generiereZufaelligePos()
-      * @param anzahlElemente
-     * @return
-     */
-    private int generiereZufaelligePos(int anzahlElemente) {
-        Random ran = new Random();
-        int res  = 0 + ran.nextInt((anzahlElemente-1)-0+1);
-        return res;
-    }
     private void printTest(String msg, long nanoTime) {
         System.out.println(msg+ "Der Test dauerte "+ nanoTime +"ns");
 
     }
-    public void performanceTest(IList<String> list){
+    public void performanceTestEins(IList<String> list){
         long time = 0;
+        //Testreihe Nummer 1
         for(int i= 0; i< 10;i++){
+            list.clear();
             time += fuegeZehntausendElemEin(list,Options.ANFANG);
             time += fuegeZehntausendElemEin(list, Options.ZUFALL);
             time += fuegeZehntausendElemEin(list, Options.ENDE);
         }
+        printTest("Testreihe 1 (10 000 ELemente jeweils am Anfang, Zufaellig und am Ende einfuegen) : ",time/10);
+    }
+    public void performanceTestZwei(IList<String> list){
+        long time = 0;
+        //Testreihe Nummer 1
+        for(int i= 0; i< 10;i++){
+            list.clear();
+            fuegeZehntausendElemEin(list,Options.ZUFALL);
+            time += loescheTausendElem(list,Options.ANFANG);
+            time += loescheTausendElem(list, Options.ZUFALL);
+            time += loescheTausendElem(list, Options.ENDE);
+        }
+        printTest("Testreihe 1 (1 000 ELemente jeweils am Anfang, Zufaellig und am Ende löschen) : ",time/10);
+    }
+    public void starteAlleTests(){
+
+        //ArrayList Tests
+        System.out.println("-Array List-\n\n");
+        IList<String> list = new ArrayList<>();
+        performanceTestEins(list);
+        performanceTestZwei(list);
+
+        //ArrayList Tests
+        System.out.println("-Linked List-\n\n");
+        list = new LinkedList<>();
+        performanceTestEins(list);
+        performanceTestZwei(list);
 
 
     }
+
 }
