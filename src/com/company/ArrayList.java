@@ -3,19 +3,22 @@ package com.company;
 import java.security.InvalidParameterException;
 
 public class ArrayList<T> implements IList<T> {
-
+    private static final int KAPAZITAET = 100;
+    //wachsende array
     private Object elemente[];
     private int anzahlElemente;
     private int maxAnzahlElemente;
-    private static final  int KAPAZITAET = 50000;
-    public ArrayList(){
-            elemente = new Object[KAPAZITAET];
-            anzahlElemente=0;
-            maxAnzahlElemente= KAPAZITAET;
+
+    public ArrayList() {
+        elemente = new Object[KAPAZITAET];
+        anzahlElemente = 0;
+        maxAnzahlElemente = KAPAZITAET;
     }
-    private boolean istGueltigeEinfPos(int pos){
-        return (pos >= 0 )&& (pos<maxAnzahlElemente);
+
+    private boolean istGueltigeEinfPos(int pos) {
+        return (pos >= 0) && (pos < maxAnzahlElemente);
     }
+
     @Override
     public int getAnzahlElemente() {
         return anzahlElemente;
@@ -23,45 +26,67 @@ public class ArrayList<T> implements IList<T> {
 
     /**
      * Fügt ein neues Element an Einfuegeposition ein
-     * @param t Generischer Parameter != null
+     *
+     * @param t   Generischer Parameter != null
      * @param pos Muss zwischen 0,.., Kapazität liegen ansonsten wird eine InvalidParameterException geworfen
      */
     @Override
     public void insertAt(T t, int pos) {
-        if(!istGueltigeEinfPos(pos)){
+        if (mussArrayVergroessertWerden()) {
+            erhoeheKapazitaet();
+        }
+        if (!istGueltigeEinfPos(pos)) {
             throw new InvalidParameterException("Ungültige Einfügeposition oder Kapazität überschritten!");
         }
+
         //Wenn es nicht das letzte Element ist, dann verschiebe alle Elemente um eins
-        if(!(anzahlElemente == pos)){
+        if (!(anzahlElemente == pos)) {
             Object last = null;
-            for(int i = pos; i< elemente.length; i++){
+            for (int i = pos; i < elemente.length; i++) {
                 Object aktElm = elemente[i];
                 elemente[i] = last;
-                last= aktElm;
+                last = aktElm;
             }
         }
-        elemente[pos]= t;
+        elemente[pos] = t;
         anzahlElemente++;
+    }
+
+    private boolean mussArrayVergroessertWerden() {
+        return anzahlElemente == maxAnzahlElemente;
+    }
+
+    /**
+     * Erhöht die Kapazität der Liste um die Variable KAPAZITAET
+     */
+    public void erhoeheKapazitaet() {
+        Object[] newList = new Object[maxAnzahlElemente + KAPAZITAET];
+        for (int i = 0; i < anzahlElemente; i++) {
+            newList[i] = elemente[i];
+        }
+        elemente = newList;
+        maxAnzahlElemente += KAPAZITAET;
     }
 
     /**
      * Entfernt ein Element aus der Liste. Wirft InvalidParameterException, falls es sich um eine leere Liste handelt.
+     *
      * @param pos Muss zwischen 0 und
      */
     @Override
     public void deleteAt(int pos) {
 
-        if(anzahlElemente == 0){
+        if (anzahlElemente == 0) {
             throw new InvalidParameterException("Es kann kein Element aus einer leeren Liste entfernt werden");
         }
-        if(!istGueltigeEinfPos(pos)){
+        if (!istGueltigeEinfPos(pos)) {
             throw new InvalidParameterException("Ungültige Löscheposition oder Kapazität überschritten!");
         }
-        if(!(anzahlElemente == pos)){
+        if (!(anzahlElemente == pos)) {
             Object last = null;
-            for(int i = anzahlElemente-1; i>=pos; i--){
+            for (int i = anzahlElemente - 1; i >= pos; i--) {
                 Object aktElm = elemente[i];
-                elemente[i]= last;
+                elemente[i] = last;
                 last = aktElm;
             }
         }
@@ -71,6 +96,7 @@ public class ArrayList<T> implements IList<T> {
 
     /**
      * Gibt Element an bestimmter Position zurück.
+     *
      * @param pos Muss zwischen 0,.., Kapazität liegen ansonsten wird eine InvalidParameterException geworfen
      * @return
      */
@@ -78,7 +104,7 @@ public class ArrayList<T> implements IList<T> {
     @Override
     public T retrieve(int pos) {
 
-        if(!istGueltigeEinfPos(pos)){
+        if (!istGueltigeEinfPos(pos)) {
             throw new InvalidParameterException("Ungültige Einfügeposition oder Kapazität überschritten!");
         }
 
@@ -90,9 +116,9 @@ public class ArrayList<T> implements IList<T> {
      */
     @Override
     public void clear() {
-        for(int i =0 ; i < elemente.length; i++){
+        for (int i = 0; i < elemente.length; i++) {
             elemente[i] = null;
         }
-        anzahlElemente=0;
+        anzahlElemente = 0;
     }
 }

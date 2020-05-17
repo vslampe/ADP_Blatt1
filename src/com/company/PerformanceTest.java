@@ -21,8 +21,10 @@ public class PerformanceTest {
      */
     private int generiereZufaelligePos(int anzahlElemente) {
         Random ran = new Random();
-        int res  = 0 + ran.nextInt((anzahlElemente-1)-0+1);
-        return res;
+        if(anzahlElemente==0){
+            return 0;
+        }
+        return ran.nextInt(anzahlElemente);
     }
 
     /**
@@ -66,18 +68,18 @@ public class PerformanceTest {
         final long timeStart = System.nanoTime();
         int pos = 0;
         if(options == Options.ENDE){
-            for(int i = 0; i < 10000; i++){
+            for(int i = 0; i < 1000; i++){
                 iList.deleteAt(iList.getAnzahlElemente()-1);
             }
         }
         else if(options==Options.ZUFALL){
             //Performance Gruende
-            for(int i = 0; i< 10000; i++){
+            for(int i = 0; i< 1000; i++){
                 iList.deleteAt(generiereZufaelligePos(iList.getAnzahlElemente()));
             }
         }
         else {
-            for(int i = 0; i < 10000; i++){
+            for(int i = 0; i < 1000; i++){
                 iList.deleteAt(pos);
             }
         }
